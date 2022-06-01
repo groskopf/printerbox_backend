@@ -1,0 +1,80 @@
+version: "2"
+
+services:
+  nginx:
+    #    build: ./nginx
+    image: ghcr.io/groskopf/printerboks_nginx
+    container_name: printerboks_nginx
+    networks:
+      - printerboks_network
+    env_file:
+      - ./config.env
+    volumes:
+      - nginx_conf:/etc/nginx/sites
+      - nginx_ssl:/etc/nginx/ssl
+      - letsencrypt_certs:/etc/letsencrypt
+      - certbot_acme_challenge:/var/www/certbot
+      - ./html:/var/www/html
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+
+  certbot:
+    #build: ./certbot
+    image: ghcr.io/groskopf/printerboks_certbot
+    container_name: printerboks_certbot
+    networks:
+      - printerboks_network
+    env_file:
+      - ./config.env
+    volumes:
+      - letsencrypt_certs:/etc/letsencrypt
+      - certbot_acme_challenge:/var/www/certbot
+    depends_on:
+      - nginx
+
+  api:
+    image: ghcr.io/groskopf/printerbox_pdf
+    container_name: printerbox_pdf
+    depends_on:
+      - nginx
+    ports:
+      - "8000:8000"
+    networks:
+      - printerboks_network
+    volumes:
+      - images:/app/images
+      - sheets:/app/sheets
+      - name_tags:/app/name_tags
+      - bookings:/app/bookings
+    restart: always
+
+  cron:
+    #build: ./cron
+    image: ghcr.io/groskopf/printerboks_certbot_cron
+    environment:
+      COMPOSE_PROJECT_NAME: "${COMPOSE_PROJECT_NAME}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./:/workdir:ro
+    depends_on:
+      - nginx
+
+volumes:
+  nginx_conf:
+  nginx_ssl:
+    external: true
+  letsencrypt_certs:
+    external: true
+  certbot_acme_challenge:
+  images:
+  name_tags:
+  sheets:
+  bookings:
+    external: true
+
+networks:
+  printerboks_network:
+    driver: bridge
+
