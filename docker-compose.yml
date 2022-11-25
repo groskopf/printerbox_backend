@@ -35,7 +35,7 @@ services:
       - nginx
 
   api:
-    image: ghcr.io/groskopf/printerbox_pdf
+    image: ghcr.io/groskopf/printerbox_pdf:1.0
     container_name: printerbox_pdf
     depends_on:
       - nginx
