@@ -48,6 +48,7 @@ services:
       - sheets:/app/sheets
       - name_tags:/app/name_tags
       - bookings:/app/bookings
+      - keys:/app/keys
     restart: always
 
   cron:
@@ -72,6 +73,8 @@ volumes:
   name_tags:
   sheets:
   bookings:
+    external: true
+  keys:
     external: true
 
 networks:
