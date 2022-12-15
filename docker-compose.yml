@@ -2,7 +2,6 @@ version: "2"
 
 services:
   nginx:
-    #    build: ./nginx
     image: ghcr.io/groskopf/printerboks_nginx
     container_name: printerboks_nginx
     networks:
@@ -21,7 +20,6 @@ services:
     restart: always
 
   certbot:
-    #build: ./certbot
     image: ghcr.io/groskopf/printerboks_certbot
     container_name: printerboks_certbot
     networks:
@@ -31,8 +29,6 @@ services:
     volumes:
       - letsencrypt_certs:/etc/letsencrypt
       - certbot_acme_challenge:/var/www/certbot
-    depends_on:
-      - nginx
 
   api:
     image: ghcr.io/groskopf/printerbox_pdf:1.0
@@ -52,15 +48,12 @@ services:
     restart: always
 
   cron:
-    #build: ./cron
     image: ghcr.io/groskopf/printerboks_certbot_cron
     environment:
       COMPOSE_PROJECT_NAME: "${COMPOSE_PROJECT_NAME}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/workdir:ro
-    depends_on:
-      - nginx
 
 volumes:
   nginx_conf:
