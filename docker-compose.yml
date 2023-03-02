@@ -31,7 +31,7 @@ services:
       - certbot_acme_challenge:/var/www/certbot
 
   api:
-    image: ghcr.io/groskopf/printerbox_pdf:1.1
+    image: ghcr.io/groskopf/printerbox_pdf:1.2
     container_name: printerbox_pdf
     depends_on:
       - nginx
@@ -44,6 +44,7 @@ services:
       - sheets:/app/sheets
       - name_tags:/app/name_tags
       - bookings:/app/bookings
+      - config:/app/config
       - keys:/app/keys
     restart: always
 
@@ -78,6 +79,8 @@ volumes:
   bookings:
     external: true
   keys:
+    external: true
+  config:
     external: true
 
 networks:
