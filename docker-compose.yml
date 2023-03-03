@@ -2,7 +2,7 @@ version: "2"
 
 services:
   nginx:
-    image: ghcr.io/groskopf/printerboks_nginx:1.1
+    image: ghcr.io/groskopf/printerboks_nginx:1.2
     container_name: printerboks_nginx
     networks:
       - printerboks_network
