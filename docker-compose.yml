@@ -31,7 +31,7 @@ services:
       - certbot_acme_challenge:/var/www/certbot
 
   api:
-    image: ghcr.io/groskopf/printerbox_pdf:1.2
+    image: ghcr.io/groskopf/printerbox_pdf:1.3
     container_name: printerbox_pdf
     depends_on:
       - nginx
@@ -49,19 +49,19 @@ services:
     restart: always
 
   cron:
-    image: ghcr.io/groskopf/printerboks_certbot_cron:1.2
+    image: ghcr.io/groskopf/printerboks_certbot_cron:1.3
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/workdir:ro
 
-  cleanup:
-    build: ./cleanup
-    image: ghcr.io/groskopf/printerboks_cleanup:0.2
-    volumes:
-      - images:/workdir/images
-      - sheets:/workdir/sheets
-      - name_tags:/workdir/name_tags
-    restart: always
+        #  cleanup:
+        #    build: ./cleanup
+        #    image: ghcr.io/groskopf/printerboks_cleanup:0.2
+        #    volumes:
+        #      - images:/workdir/images
+        #      - sheets:/workdir/sheets
+        #      - name_tags:/workdir/name_tags
+        #    restart: always
 
 volumes:
   nginx_conf:
