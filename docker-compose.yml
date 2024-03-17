@@ -70,6 +70,7 @@ volumes:
   letsencrypt_certs:
     external: true
   certbot_acme_challenge:
+    external: true
   images:
     external: true
   name_tags:
