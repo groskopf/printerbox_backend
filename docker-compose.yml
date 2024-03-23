@@ -2,7 +2,7 @@ version: "2"
 
 services:
   nginx:
-    image: ghcr.io/groskopf/printerboks_nginx:1.2
+    image: ghcr.io/groskopf/printerboks_nginx:2.0
     container_name: printerboks_nginx
     networks:
       - printerboks_network
@@ -44,7 +44,25 @@ services:
       - sheets:/app/sheets
       - name_tags:/app/name_tags
       - bookings:/app/bookings
-      - config:/app/config
+      - ./config:/app/config
+      - keys:/app/keys
+    restart: always
+  
+  api2:
+    image: ghcr.io/groskopf/printerbox_pdf:2.0
+    container_name: printerbox_pdf2
+    depends_on:
+      - nginx
+    ports:
+      - "8001:8001"
+    networks:
+      - printerboks_network
+    volumes:
+      - images:/app/images
+      - sheets:/app/sheets
+      - name_tags:/app/name_tags
+      - bookings:/app/bookings
+      - ./config2:/app/config
       - keys:/app/keys
     restart: always
 
@@ -80,8 +98,6 @@ volumes:
   bookings:
     external: true
   keys:
-    external: true
-  config:
     external: true
 
 networks:
