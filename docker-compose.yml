@@ -61,10 +61,10 @@ services:
       - images:/app/images
       - sheets:/app/sheets
       - name_tags:/app/name_tags
-      - bookings:/app/bookings
+      - bookings_2:/app/bookings
       - ./config2:/app/config
       - keys:/app/keys
-    restart: always
+    restart: on-failure:3
 
   cron:
     image: ghcr.io/groskopf/printerboks_certbot_cron:1.5
@@ -96,6 +96,8 @@ volumes:
   sheets:
     external: true
   bookings:
+    external: true
+  bookings_2:
     external: true
   keys:
     external: true
