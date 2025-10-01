@@ -72,14 +72,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/workdir:ro
 
-  cleanup:
-    build: ./cleanup
-    image: ghcr.io/groskopf/printerboks_cleanup:0.3
-    volumes:
-      - images:/workdir/images
-      - sheets:/workdir/sheets
-      - name_tags:/workdir/name_tags
-    restart: always
+#  cleanup:
+#    build: ./cleanup
+#    image: ghcr.io/groskopf/printerboks_cleanup:0.3
+#    volumes:
+#      - images:/workdir/images
+#      - sheets:/workdir/sheets
+#      - name_tags:/workdir/name_tags
+#    restart: always
 
 volumes:
   nginx_conf:
