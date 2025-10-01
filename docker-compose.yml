@@ -31,7 +31,7 @@ services:
       - certbot_acme_challenge:/var/www/certbot
 
   api:
-    image: ghcr.io/groskopf/printerbox_pdf:1.4
+    image: ghcr.io/groskopf/printerbox_pdf:2.3
     container_name: printerbox_pdf
     depends_on:
       - nginx
@@ -47,7 +47,7 @@ services:
       - ./config:/app/config
       - keys:/app/keys
     restart: always
-  
+
   api2:
     image: ghcr.io/groskopf/printerbox_pdf:2.0
     container_name: printerbox_pdf2
@@ -61,10 +61,10 @@ services:
       - images:/app/images
       - sheets:/app/sheets
       - name_tags:/app/name_tags
-      - bookings:/app/bookings
+      - bookings_2:/app/bookings
       - ./config2:/app/config
       - keys:/app/keys
-    restart: always
+    restart: on-failure:3
 
   cron:
     image: ghcr.io/groskopf/printerboks_certbot_cron:1.5
@@ -72,14 +72,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/workdir:ro
 
-  cleanup:
-    build: ./cleanup
-    image: ghcr.io/groskopf/printerboks_cleanup:0.3
-    volumes:
-      - images:/workdir/images
-      - sheets:/workdir/sheets
-      - name_tags:/workdir/name_tags
-    restart: always
+#  cleanup:
+#    build: ./cleanup
+#    image: ghcr.io/groskopf/printerboks_cleanup:0.3
+#    volumes:
+#      - images:/workdir/images
+#      - sheets:/workdir/sheets
+#      - name_tags:/workdir/name_tags
+#    restart: always
 
 volumes:
   nginx_conf:
@@ -97,10 +97,11 @@ volumes:
     external: true
   bookings:
     external: true
+  bookings_2:
+    external: true
   keys:
     external: true
 
 networks:
   printerboks_network:
     driver: bridge
-
