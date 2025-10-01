@@ -31,7 +31,7 @@ services:
       - certbot_acme_challenge:/var/www/certbot
 
   api:
-    image: ghcr.io/groskopf/printerbox_pdf:1.4
+    image: ghcr.io/groskopf/printerbox_pdf:2.3
     container_name: printerbox_pdf
     depends_on:
       - nginx
@@ -47,7 +47,7 @@ services:
       - ./config:/app/config
       - keys:/app/keys
     restart: always
-  
+
   api2:
     image: ghcr.io/groskopf/printerbox_pdf:2.0
     container_name: printerbox_pdf2
@@ -105,4 +105,3 @@ volumes:
 networks:
   printerboks_network:
     driver: bridge
-
